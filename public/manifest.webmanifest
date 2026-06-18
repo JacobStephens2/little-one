@@ -1,0 +1,16 @@
+{
+  "name": "Little One — Baby Tracker",
+  "short_name": "Little One",
+  "description": "A warm, private tracker for pregnancy and your new baby.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#fbf3e7",
+  "theme_color": "#fbf3e7",
+  "orientation": "portrait",
+  "icons": [
+    { "src": "/img/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/img/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/img/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

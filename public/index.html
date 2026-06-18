@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1" />
+  <title>Little One · baby.stephens.page</title>
+  <meta name="description" content="A warm, private tracker for pregnancy and your new baby." />
+  <meta name="theme-color" content="#fbf3e7" />
+  <link rel="manifest" href="/manifest.webmanifest" />
+  <link rel="apple-touch-icon" href="/img/icon-192.png" />
+  <link rel="icon" href="/img/favicon.svg" type="image/svg+xml" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/styles.css?v=1" />
+</head>
+<body>
+  <div id="root"></div>
+
+  <!-- SVG gradient defs reused by rings & charts -->
+  <svg width="0" height="0" style="position:absolute">
+    <defs>
+      <linearGradient id="ringgrad" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stop-color="#cd7351" />
+        <stop offset="100%" stop-color="#d9a441" />
+      </linearGradient>
+      <linearGradient id="chartgrad" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#cd7351" stop-opacity="0.35" />
+        <stop offset="100%" stop-color="#cd7351" stop-opacity="0" />
+      </linearGradient>
+    </defs>
+  </svg>
+
+  <script src="/weekdata.js?v=1"></script>
+  <script src="/app.js?v=1"></script>
+</body>
+</html>
