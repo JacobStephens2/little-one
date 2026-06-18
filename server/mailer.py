@@ -10,7 +10,10 @@ import os
 import urllib.error
 import urllib.request
 
-RESEND_API_KEY = os.environ["RESEND_API_KEY"]
+# In production the key is injected from the shared SOPS store as SMTP_PASS
+# (/etc/shared-secrets/smtp.env.sops via secret-env). RESEND_API_KEY is a local-dev
+# fallback. Rotate with: rotate-secret smtp
+RESEND_API_KEY = os.environ.get("SMTP_PASS") or os.environ.get("RESEND_API_KEY", "")
 MAIL_FROM = os.environ.get("MAIL_FROM", "Little One <noreply@stephens.page>")
 ADMIN_EMAIL = os.environ.get("ADMIN_EMAIL", "jacob@stephens.page")
 

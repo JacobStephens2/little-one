@@ -33,7 +33,11 @@ random, hashed at rest, single-use, and expiring.
 - Apache: static docroot `../public` + `ProxyPass /api/`; `/api/stream` has
   `flushpackets=on` + `no-gzip` so SSE isn't buffered (in the `-le-ssl` vhost).
 - Secrets: `server/.env` (chmod 600) and `server/vapid_private.pem` (chmod 600,
-  gitignored). See `.env.example`.
+  gitignored). See `.env.example`. **The Resend key is NOT in `.env`** — the unit
+  injects it as `SMTP_PASS` from the shared SOPS store
+  `/etc/shared-secrets/smtp.env.sops` via `secret-env` (same as `macros-api`), so
+  one `rotate-secret smtp` rotates the whole fleet. `mailer.py` reads `SMTP_PASS`
+  (falls back to `RESEND_API_KEY` for local dev).
 
 ## Generate VAPID keys (one-time)
 ```python
