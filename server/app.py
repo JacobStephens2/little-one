@@ -40,7 +40,8 @@ signer = URLSafeTimedSerializer(APP_SECRET, salt="baby-auth")
 # the server only validates the type tag and timestamps.
 EVENT_TYPES = {
     "feed", "diaper", "sleep", "pump", "kick", "contraction",
-    "weight", "symptom", "appointment", "milestone", "measurement", "note",
+    "weight", "symptom", "appointment", "milestone", "measurement",
+    "ultrasound", "note",
 }
 
 pool: ConnectionPool

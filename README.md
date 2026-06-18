@@ -9,11 +9,23 @@ with a Day and a Night (3am) theme.
 ## Layout
 - `server/` — FastAPI + Postgres backend (`app.py`), uvicorn on `127.0.0.1:3490`.
   See [server/README.md](server/README.md) for ops, auth, and the API.
-- `public/` — vanilla-JS PWA (no build step): `index.html`, `app.js`, `styles.css`,
-  `weekdata.js`, `sw.js`, `img/`. Served static by Apache; `/api/` reverse-proxies
-  to the backend.
+- `frontend/` — **TypeScript** sources (`src/app.ts`, `src/weekdata.ts`, `src/types.ts`),
+  bundled by esbuild (with a `tsc --noEmit` typecheck) to `public/app.js`.
+- `public/` — static PWA served by Apache: `index.html`, the built `app.js`,
+  `styles.css`, `sw.js`, `img/`. `/api/` reverse-proxies to the backend.
 
-## Run locally
+## Build the frontend
+```
+cd frontend
+npm install
+npm run build      # tsc typecheck + esbuild bundle → ../public/app.js
+npm run watch      # rebuild on change while developing
+```
+`public/app.js` is the served artifact and is committed; rebuild it after editing
+any `frontend/src/*.ts`. Bump the `?v=` query in `index.html`/`sw.js` when shipping
+so clients pick up the new bundle.
+
+## Run the backend locally
 ```
 cd server
 cp .env.example .env        # then fill in DATABASE_URL, APP_SECRET, PASSWORD_HASH

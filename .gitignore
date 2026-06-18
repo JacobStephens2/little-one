@@ -9,6 +9,10 @@ __pycache__/
 .venv/
 venv/
 
+# Node / frontend build tooling (public/app.js IS committed — it's the served artifact)
+node_modules/
+frontend/node_modules/
+
 # OS / editor
 .DS_Store
 *.swp

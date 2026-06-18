@@ -1,6 +1,9 @@
-// Week-by-week pregnancy reference: size comparison + approx dimensions + a development note.
-// Lengths are typical crown-to-rump (early) / crown-to-heel (later) figures; treat as friendly estimates.
-window.WEEK_DATA = {
+import type { WeekInfo } from "./types";
+
+// Week-by-week pregnancy reference (gestational weeks): size comparison +
+// approx dimensions + a development note. Lengths are typical crown-to-rump
+// (early) / crown-to-heel (later) figures; treat as friendly estimates.
+export const WEEK_DATA: Record<number, WeekInfo> = {
   4:  { emoji: "🌱", fruit: "Poppy seed",     size: "2 mm",            note: "The embryo is implanting. The neural tube, which becomes the brain and spine, is forming." },
   5:  { emoji: "🌾", fruit: "Sesame seed",    size: "3 mm",            note: "The heart begins to form and may start a faint, fluttering beat this week." },
   6:  { emoji: "🫛", fruit: "Sweet pea",      size: "5 mm",            note: "Tiny buds that will become arms and legs appear. The heartbeat is often detectable now." },

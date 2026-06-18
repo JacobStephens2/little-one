@@ -1,8 +1,8 @@
 /* Service worker: cache the app shell so the app opens offline.
    API calls are always network (never cached); static assets are cache-first. */
-const CACHE = "littleone-v1";
+const CACHE = "littleone-v2";
 const SHELL = [
-  "/", "/index.html", "/styles.css?v=1", "/app.js?v=1", "/weekdata.js?v=1",
+  "/", "/index.html", "/styles.css?v=2", "/app.js?v=2",
   "/manifest.webmanifest", "/img/favicon.svg", "/img/icon-192.png", "/img/icon-512.png",
 ];
 
