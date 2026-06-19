@@ -70,6 +70,20 @@ export async function pushPermission(): Promise<NotificationPermission | "unsupp
   if (!("Notification" in window)) return "unsupported";
   return Notification.permission;
 }
+export async function pushSubscribed(): Promise<boolean> {
+  if (!("serviceWorker" in navigator) || !("PushManager" in window)) return false;
+  try { const reg = await navigator.serviceWorker.ready; return !!(await reg.pushManager.getSubscription()); }
+  catch { return false; }
+}
+export async function disablePush(): Promise<void> {
+  if (!("serviceWorker" in navigator)) return;
+  const reg = await navigator.serviceWorker.ready;
+  const sub = await reg.pushManager.getSubscription();
+  if (sub) {
+    try { await api.post("/push/unsubscribe", sub.toJSON()); } catch {}
+    try { await sub.unsubscribe(); } catch {}
+  }
+}
 export const pushTest = () => api.post("/push/test");
 
 /* ---- theme ---- */

@@ -2,7 +2,7 @@
   import { onMount } from "svelte";
   import { settings$, events$, saveSettings, setLoggedBy } from "../lib/db";
   import { pregAnchors } from "../lib/format";
-  import { session, auth, loadSession, enablePush, pushTest, setTheme, currentTheme } from "../lib/session";
+  import { session, auth, loadSession, enablePush, disablePush, pushSubscribed, pushTest, setTheme, currentTheme } from "../lib/session";
   import { toast } from "../lib/toast";
   import type { Settings } from "../lib/types";
 
@@ -20,9 +20,13 @@
     form = { ...$settings$ };
     displayName = $session?.user.display_name || "";
     householdName = $session?.household.name || "";
-    if ("Notification" in window) pushState = Notification.permission;
-    else pushState = "unsupported";
+    initPush();
   });
+  async function initPush() {
+    if (!("Notification" in window) || !("serviceWorker" in navigator)) { pushState = "unsupported"; return; }
+    if (Notification.permission === "denied") { pushState = "denied"; return; }
+    pushState = (await pushSubscribed()) ? "granted" : "off";
+  }
 
   const dueHint = $derived.by(() => {
     const due = pregAnchors(form).due;
@@ -65,6 +69,7 @@
     }
   }
   async function testPush() { try { await pushTest(); toast("Test sent"); } catch { toast("Send a subscription first"); } }
+  async function turnOffPush() { try { await disablePush(); pushState = "off"; toast("Reminders off"); } catch { toast("Couldn't turn off"); } }
   function pickTheme(t: string) { theme = t; setTheme(t); }
   function exportData() {
     const blob = new Blob([JSON.stringify({ settings: $settings$, events: $events$ }, null, 2)], { type: "application/json" });
@@ -126,7 +131,12 @@
   <section class="card">
     <div class="lt" style="margin-bottom:10px">Notifications</div>
     {#if pushState === "granted"}
-      <div class="list-row"><span>Push reminders are on</span><button class="btn ghost" style="width:auto;padding:8px 14px" type="button" onclick={testPush}>Send test</button></div>
+      <div class="list-row"><span>Push reminders are on</span>
+        <span style="display:flex;gap:8px">
+          <button class="btn ghost" style="width:auto;padding:8px 14px" type="button" onclick={testPush}>Test</button>
+          <button class="btn danger" style="width:auto;padding:8px 14px" type="button" onclick={turnOffPush}>Turn off</button>
+        </span>
+      </div>
     {:else if pushState === "unsupported"}
       <p class="tiny" style="margin:0">This browser doesn't support push. On iPhone, add to your Home Screen first.</p>
     {:else}
