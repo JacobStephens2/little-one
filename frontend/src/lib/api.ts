@@ -1,7 +1,8 @@
 // Thin fetch wrapper. credentials:"include" so the httpOnly session cookie flows.
 export class ApiError extends Error {
   status: number;
-  constructor(status: number, message: string) { super(message); this.status = status; }
+  detail: string;
+  constructor(status: number, message: string) { super(message); this.status = status; this.detail = message; }
 }
 
 async function req(method: string, path: string, body?: any): Promise<any> {
