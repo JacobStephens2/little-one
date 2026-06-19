@@ -28,7 +28,7 @@
   const chooserOpts = $derived<EventType[]>(
     phase(settings) === "baby"
       ? ["feed", "diaper", "sleep", "pump", "measurement", "milestone", "appointment", "note"]
-      : ["kick", "contraction", "ultrasound", "weight", "symptom", "appointment", "milestone", "note"]);
+      : ["symptom", "ultrasound", "weight", "appointment", "kick", "contraction", "milestone", "note"]);
 
   function nav(v: typeof view) { view = v; window.scrollTo(0, 0); }
 </script>

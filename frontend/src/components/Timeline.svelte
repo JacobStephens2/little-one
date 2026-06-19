@@ -13,7 +13,8 @@
   const types = $derived<string[]>(
     phase(s) === "baby"
       ? ["all", "feed", "diaper", "sleep", "pump", "measurement", "milestone", "appointment", "note"]
-      : ["all", "kick", "contraction", "ultrasound", "weight", "symptom", "appointment", "note"]);
+      // pregnancy chips in rough order encountered: early symptoms/scans -> ongoing -> late
+      : ["all", "symptom", "ultrasound", "weight", "appointment", "kick", "contraction", "note"]);
 
   const groups = $derived.by(() => {
     const list = filter === "all" ? evs : evs.filter((e) => e.type === filter);

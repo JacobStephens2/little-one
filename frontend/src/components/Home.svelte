@@ -87,12 +87,12 @@
 
     <div class="sec-head"><h3>Quick log</h3></div>
     <div class="quick-grid">
-      <button class="quick t-sage" onclick={() => open({ kind: "kick" })}><span class="qi">{@html I.kick}</span><span><span class="qt">Kick counter</span><br><span class="qs">Count movements</span></span></button>
-      <button class="quick t-rose" onclick={() => open({ kind: "contraction" })}><span class="qi">{@html I.contraction}</span><span><span class="qt">Contractions</span><br><span class="qs">Time them</span></span></button>
+      <button class="quick t-rose" onclick={() => open({ kind: "log", type: "symptom" })}><span class="qi">{@html I.symptom}</span><span><span class="qt">Symptom</span><br><span class="qs">How you feel</span></span></button>
       <button class="quick t-sky" onclick={() => open({ kind: "log", type: "ultrasound" })}><span class="qi">{@html I.ultrasound}</span><span><span class="qt">Ultrasound</span><br><span class="qs">CRL & heartbeat</span></span></button>
       <button class="quick t-sage" onclick={() => open({ kind: "log", type: "weight" })}><span class="qi">{@html I.weight}</span><span><span class="qt">My weight</span><br><span class="qs">Track the curve</span></span></button>
-      <button class="quick t-rose" onclick={() => open({ kind: "log", type: "symptom" })}><span class="qi">{@html I.symptom}</span><span><span class="qt">Symptom</span><br><span class="qs">How you feel</span></span></button>
       <button class="quick t-sky" onclick={() => open({ kind: "log", type: "appointment" })}><span class="qi">{@html I.appointment}</span><span><span class="qt">Appointment</span><br><span class="qs">Don't forget</span></span></button>
+      <button class="quick t-sage" onclick={() => open({ kind: "kick" })}><span class="qi">{@html I.kick}</span><span><span class="qt">Kick counter</span><br><span class="qs">Count movements</span></span></button>
+      <button class="quick t-rose" onclick={() => open({ kind: "contraction" })}><span class="qi">{@html I.contraction}</span><span><span class="qt">Contractions</span><br><span class="qs">Time them</span></span></button>
     </div>
 
     {#if upcoming.length}
