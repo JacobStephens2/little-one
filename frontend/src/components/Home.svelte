@@ -4,6 +4,7 @@
   import { toast } from "../lib/toast";
   import { I, META } from "../lib/icons";
   import { WEEK_DATA } from "../lib/weekdata";
+  import { FUN_FACTS } from "../lib/funfacts";
   import {
     phase, pregInfo, babyAge, units, summary, fmtDur, timeAgo, dayKey, r1,
   } from "../lib/format";
@@ -47,6 +48,7 @@
   {@const C = 2 * Math.PI * 92}
   {@const lastUS = evs.find((e) => e.type === "ultrasound")}
   {@const upcoming = evs.filter((e) => e.type === "appointment" && e.data.when && new Date(e.data.when) > new Date()).sort((a, b) => +new Date(a.data.when) - +new Date(b.data.when)).slice(0, 2)}
+  {@const nextFact = FUN_FACTS.filter((f) => f.week >= (g.ga?.weeks ?? 0)).sort((a, b) => a.week - b.week)[0] || FUN_FACTS[FUN_FACTS.length - 1]}
   <div class="stack">
     <section class="card reveal hero">
       <div class="eyebrow">{g.tri}</div>
@@ -77,6 +79,16 @@
         <div class="blurb">{w.note}</div>
       </div>
     </section>
+
+    {#if nextFact}
+      <button class="card reveal" style="width:100%;text-align:left;display:block" onclick={() => open({ kind: "facts" })}>
+        <div class="row-between"><span class="eyebrow">Did you know?</span><span class="tiny" style="color:var(--clay-deep)">see all →</span></div>
+        <div style="display:flex;gap:14px;align-items:flex-start;margin-top:10px">
+          <span style="font-size:1.9rem;line-height:1">{nextFact.emoji}</span>
+          <div><div class="display" style="font-size:1.1rem;line-height:1.25">{nextFact.q}</div><div class="muted" style="margin-top:5px">{nextFact.a}</div></div>
+        </div>
+      </button>
+    {/if}
 
     {#if lastUS}
       <section class="card reveal" style="display:flex;gap:16px;align-items:center">

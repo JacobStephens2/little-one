@@ -16,6 +16,7 @@
   import GrowthChart from "./tools/GrowthChart.svelte";
   import Ultrasounds from "./tools/Ultrasounds.svelte";
   import Appointments from "./tools/Appointments.svelte";
+  import FunFacts from "./FunFacts.svelte";
 
   let view = $state<"home" | "timeline" | "tools" | "settings">("home");
   let sheet = $state<{ kind: string; type?: EventType; id?: string } | null>(null);
@@ -93,4 +94,6 @@
   <Ultrasounds onclose={close} {open} />
 {:else if sheet?.kind === "appts"}
   <Appointments onclose={close} {open} />
+{:else if sheet?.kind === "facts"}
+  <FunFacts onclose={close} />
 {/if}
