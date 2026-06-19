@@ -53,8 +53,16 @@
     catch (e: any) { toast(e.detail || "Couldn't send invite"); }
   }
   async function turnOnPush() {
-    try { const r = await enablePush(); pushState = r === "granted" ? "granted" : r; if (r === "granted") toast("Notifications on"); else if (r === "denied") toast("Notifications blocked in browser"); }
-    catch { toast("Couldn't enable notifications"); }
+    try {
+      const r = await enablePush();
+      pushState = r === "granted" ? "granted" : r;
+      if (r === "granted") toast("Notifications on");
+      else if (r === "denied") toast("Allow notifications in your browser site settings");
+      else if (r === "unsupported") toast("This browser can't do push here");
+    } catch (e: any) {
+      console.error("enablePush failed:", e);
+      toast("Push error: " + (e?.name || "") + " " + (e?.message || e));
+    }
   }
   async function testPush() { try { await pushTest(); toast("Test sent"); } catch { toast("Send a subscription first"); } }
   function pickTheme(t: string) { theme = t; setTheme(t); }

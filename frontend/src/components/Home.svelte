@@ -1,6 +1,7 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import { events$, settings$ } from "../lib/db";
+  import { events$, settings$, saveSettings } from "../lib/db";
+  import { toast } from "../lib/toast";
   import { I, META } from "../lib/icons";
   import { WEEK_DATA } from "../lib/weekdata";
   import {
@@ -19,6 +20,12 @@
 
   const recent = $derived(evs.slice(0, 5));
   function openEvent(ev: Ev) { open({ kind: "event", id: ev.id }); }
+
+  function toggleAge() {
+    const next = (s.age_pref || "embryonic") === "embryonic" ? "gestational" : "embryonic";
+    saveSettings({ age_pref: next });
+    toast("Showing " + next + " age");
+  }
 </script>
 
 {#if ph === "setup"}
@@ -43,7 +50,7 @@
   <div class="stack">
     <section class="card reveal hero">
       <div class="eyebrow">{g.tri}</div>
-      <div class="ring-wrap">
+      <div class="ring-wrap" role="button" tabindex="0" title="Tap to switch age type" style="cursor:pointer" onclick={toggleAge} onkeydown={(e) => (e.key === "Enter" || e.key === " ") && toggleAge()}>
         <svg class="ring" viewBox="0 0 200 200">
           <circle class="ring-bg" cx="100" cy="100" r="92" />
           <circle class="ring-fg" cx="100" cy="100" r="92" stroke-dasharray={C} stroke-dashoffset={ringOn ? C * (1 - g.pct) : C} />
@@ -57,7 +64,8 @@
         <span class="trimester">{g.daysToDue >= 0 ? g.daysToDue + " days to go" : Math.abs(g.daysToDue) + " days over"}</span>
       {/if}
       <h2>Due {g.due != null ? new Date(g.due).toLocaleDateString([], { month: "long", day: "numeric", year: "numeric" }) : "—"}</h2>
-      {#if secondary}<div class="due">{g.pref === "embryonic" ? "Gestational" : "Embryonic"} age · {secondary.weeks}w {secondary.rem}d</div>{/if}
+      {#if secondary}<div class="due">{g.pref === "embryonic" ? "Gestational" : "Embryonic"} age · {secondary.weeks}w {secondary.rem}d</div>
+        <div class="tiny" style="margin-top:5px;opacity:.75">tap the ring to switch</div>{/if}
     </section>
 
     <section class="card reveal size-card">
