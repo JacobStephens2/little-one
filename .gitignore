@@ -17,3 +17,23 @@ frontend/node_modules/
 .DS_Store
 *.swp
 .vscode/
+
+# Android build (generated projects + artifacts; APKs ship via GitHub Releases)
+frontend/android/
+android-twa/app/
+android-twa/build/
+android-twa/.gradle/
+android-twa/gradle/
+android-twa/gradlew
+android-twa/gradlew.bat
+android-twa/local.properties
+android-twa/store_icon.png
+android-twa/manifest-checksum.txt
+*.apk
+*.aab
+*.jks
+*.keystore
+*.idsig
+android-twa/build.gradle
+android-twa/gradle.properties
+android-twa/settings.gradle

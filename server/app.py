@@ -9,6 +9,7 @@ import asyncio
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
 import db
@@ -28,6 +29,16 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(title="baby.stephens.page", lifespan=lifespan)
+
+# Native (Capacitor) wrappers load from a localhost origin, so their API calls are
+# cross-origin and need CORS. The web app is same-origin and unaffected.
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["https://localhost", "http://localhost", "capacitor://localhost"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 app.include_router(auth.router)
 app.include_router(auth.me_router)

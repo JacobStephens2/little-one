@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "page.stephens.littleone.twa",
+      "sha256_cert_fingerprints": [
+        "23:A0:41:4F:45:8C:04:A8:2B:B9:4A:09:6F:9D:19:1E:8F:EB:AE:01:A7:03:B3:8F:CA:83:92:A3:6F:F1:6B:4B"
+      ]
+    }
+  }
+]

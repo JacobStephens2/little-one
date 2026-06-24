@@ -1,5 +1,5 @@
 import { writable } from "svelte/store";
-import { api } from "./api";
+import { api, setAuthToken } from "./api";
 import type { Session } from "./types";
 import { setLoggedBy, startStream, sync, wipeLocal } from "./db";
 
@@ -29,22 +29,25 @@ export const auth = {
   register: (b: { email: string; password: string; display_name: string; household_name?: string }) =>
     api.post("/auth/register", b),
   login: async (email: string, password: string) => {
-    await api.post("/auth/login", { email, password });
+    const r = await api.post("/auth/login", { email, password });
+    setAuthToken(r?.token || null); // native only
     await loadSession();
   },
   forgot: (email: string) => api.post("/auth/forgot", { email }),
   reset: async (token: string, password: string) => {
-    await api.post("/auth/reset", { token, password });
+    const r = await api.post("/auth/reset", { token, password });
+    setAuthToken(r?.token || null);
     await loadSession();
   },
   magic: (email: string) => api.post("/auth/magic", { email }),
   resendVerification: (email: string) => api.post("/auth/resend-verification", { email }),
   inviteInfo: (token: string) => api.get(`/auth/invite/info?token=${encodeURIComponent(token)}`),
   acceptInvite: async (token: string, password: string, display_name: string) => {
-    await api.post("/auth/accept-invite", { token, password, display_name });
+    const r = await api.post("/auth/accept-invite", { token, password, display_name });
+    setAuthToken(r?.token || null);
     await loadSession();
   },
-  logout: async () => { try { await api.post("/auth/logout"); } catch {} await wipeLocal(); },
+  logout: async () => { try { await api.post("/auth/logout"); } catch {} setAuthToken(null); await wipeLocal(); },
   invite: (email: string) => api.post("/household/invite", { email }),
   updateProfile: (b: { display_name?: string; household_name?: string }) => api.patch("/me", b),
 };

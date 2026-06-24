@@ -5,7 +5,7 @@
    they propagate conflict-free. Settings is last-write-wins by version. */
 import Dexie, { liveQuery, type Table } from "dexie";
 import { readable, writable } from "svelte/store";
-import { api } from "./api";
+import { api, isNative } from "./api";
 import type { Ev, EventType, Settings } from "./types";
 
 interface MetaRow { key: string; value: any; }
@@ -150,6 +150,9 @@ export async function sync() {
 let es: EventSource | null = null;
 export function startStream() {
   if (es) return;
+  // SSE can't carry a bearer token and is cross-origin in native wrappers — skip it
+  // there (foreground pull + visibilitychange sync cover refresh).
+  if (isNative()) return;
   es = new EventSource("/api/stream", { withCredentials: true });
   es.addEventListener("changed", () => pull());
   es.onerror = () => { /* EventSource auto-reconnects */ };
