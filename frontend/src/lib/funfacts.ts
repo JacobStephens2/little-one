@@ -22,4 +22,32 @@ export const FUN_FACTS: FunFact[] = [
   { week: 36, emoji: "🎒", q: "When should I pack a hospital bag?", a: "Many people have a bag ready by around week 36, just in case your little one decides to arrive early." },
   { week: 37, emoji: "🍼", q: "When is my baby 'full term'?", a: "37 weeks is 'early term', and 39–40 weeks is 'full term'. Your baby keeps maturing right up to birth." },
   { week: 40, emoji: "📅", q: "Will my baby come on the due date?", a: "Only about 1 in 20 babies arrive on their exact due date — most show up within a couple of weeks on either side." },
+  // earliest sex determination
+  { week: 7, emoji: "🔬", q: "What's the earliest I can find out the sex?", a: "A blood test called NIPT (cell-free DNA) can reveal it as early as about 9 to 10 weeks by reading your baby's DNA from a sample of your blood - well before an ultrasound can tell." },
+  // weight-gain expectations (general IOM/ACOG ranges, not personalized)
+  { week: 8,  emoji: "🍃", q: "Should I be gaining weight yet?", a: "Not much - first-trimester gain is usually small, often just 1 to 5 lb total. Nausea can even keep it flat, and that's perfectly okay." },
+  { week: 10, emoji: "⚖️", q: "How much weight will I gain overall?", a: "It depends on your starting weight, but a common guide is about 25 to 35 lb total for an average BMI (more if you started underweight, less if overweight). Most of it comes later in pregnancy." },
+  { week: 12, emoji: "🌿", q: "Is it normal if I haven't gained weight?", a: "Early on, yes - especially with morning sickness. Your provider watches the trend over time, not any single week, so try not to fixate on the number." },
+  { week: 17, emoji: "📈", q: "How fast should the weight come on now?", a: "In the second and third trimesters, slow and steady is the goal - roughly half a pound to a pound a week for an average BMI." },
+  { week: 26, emoji: "🤍", q: "Where does all the pregnancy weight go?", a: "Only a few pounds are the baby. The rest is the placenta, extra blood and fluid, a larger uterus, amniotic fluid, growing breasts, and some fat stores for breastfeeding." },
 ];
+
+import { writable } from "svelte/store";
+
+// One dismissible fact per app open. Picked once per page load from a window
+// around the current week (current + "about to be"), rotating each load via a
+// stored cursor so it differs over time. No browse-all.
+export const factDismissed = writable(false);
+
+let _chosen: FunFact | null | undefined;
+export function sessionFact(currentWeek: number): FunFact | null {
+  if (_chosen !== undefined) return _chosen;
+  const near = FUN_FACTS.filter((f) => f.week >= currentWeek - 1 && f.week <= currentWeek + 8);
+  const upcoming = FUN_FACTS.filter((f) => f.week >= currentWeek);
+  const pool = (near.length ? near : upcoming.length ? upcoming : FUN_FACTS).slice().sort((a, b) => a.week - b.week);
+  let cursor = 0;
+  try { cursor = parseInt(localStorage.getItem("baby.ff.cursor") || "0", 10) || 0; } catch {}
+  _chosen = pool[cursor % pool.length] ?? null;
+  try { localStorage.setItem("baby.ff.cursor", String(cursor + 1)); } catch {}
+  return _chosen;
+}
